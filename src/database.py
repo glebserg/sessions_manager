@@ -1,5 +1,7 @@
+from contextlib import contextmanager
+
 from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from config import database_settings
 
 engine = create_engine(
@@ -21,9 +23,23 @@ if database_settings.DB_URL.startswith("sqlite"):
         cursor.close()
 
 
-def get_db() -> SessionLocal:
+# Для FastAPI зависимостей
+def get_db() -> Session:
     db = SessionLocal()
     try:
         yield db
+    finally:
+        db.close()
+
+# Для фоновых задач
+@contextmanager
+def get_db_session() -> Session:
+    db = SessionLocal()
+    try:
+        yield db
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     finally:
         db.close()

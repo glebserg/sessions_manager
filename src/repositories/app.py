@@ -1,5 +1,7 @@
 from typing import Type, Optional
 
+from sqlalchemy import desc
+
 from repositories import BaseRepository
 from shemes.app import CreateApp
 from models import AppModel
@@ -8,22 +10,13 @@ from models import AppModel
 class AppRepository(BaseRepository):
 
     def get_list(self) -> list[Type[AppModel]]:
-        return list(self._db.query(AppModel).all())
+        return list(self._db.query(AppModel).order_by(desc(AppModel.created_at)).all())
 
     def get_by_id(self, pk: int) -> Optional[AppModel]:
         return self._db.query(AppModel).get(pk)
 
     def get_by_name(self, name: str) -> Optional[AppModel]:
         return self._db.query(AppModel).filter(AppModel.name == name).first()
-
-    def get_or_create(self, name: str) -> tuple[bool, AppModel]:
-        created: bool = False
-        exist: Optional[AppModel] = self.get_by_name(name)
-        if not exist:
-            exist = CreateApp(name=name)
-            self.create(exist)
-            created = True
-        return created, exist
 
     def create(self, payload: CreateApp) -> AppModel:
         new_item = AppModel(**payload.model_dump())

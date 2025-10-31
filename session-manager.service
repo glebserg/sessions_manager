@@ -1,0 +1,13 @@
+[Unit]
+Description=Session Manager
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/session-manager
+EnvironmentFile=/opt/session-manager/.env
+ExecStart=poetry run python main.py
+
+[Install]
+WantedBy=multi-user.target

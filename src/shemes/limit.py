@@ -10,6 +10,10 @@ class CreateLimit(BaseModel):
     app_id: int = Field(ge=1)
     minutes: int = Field(ge=1, examples=[60])
 
+class UpdateLimit(BaseModel):
+    minutes: int = Field(ge=1, examples=[60])
+    active: bool
+
 class LimitList(DBItemReader):
     id: int
     minutes: int

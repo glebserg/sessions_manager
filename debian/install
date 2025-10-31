@@ -1,0 +1,11 @@
+src/* /opt/session-manager
+
+pyproject.toml /opt/session-manager
+poetry.lock /opt/session-manager
+
+.env.example /opt/session-manager
+
+
+README.md /opt/session-manager
+
+session-manager.service /etc/systemd/system/

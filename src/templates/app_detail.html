@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Приложение "{{app.name}}" {% endblock %}
+
+{% block content %}
+<h1>Приложение "{{app.name}}"</h1>
+<p>ID: {{app.id}}</p>
+<p>Дата добавления: {{app.created_at}}</p>
+
+{% endblock %}

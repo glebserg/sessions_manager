@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Список приложений{% endblock %}
+
+{% block content %}
+<h1>Приложения</h1>
+<ul class="list-group">
+    {% for app in apps %}
+        <li class="list-group-item">{{ app.id }} - {{ app.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

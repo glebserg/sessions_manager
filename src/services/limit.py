@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 
 from models import LimitModel
 from repositories.limit import LimitRepository
-from shemes.limit import LimitList, LimitDetail, CreateLimit
+from shemes.limit import LimitList, LimitDetail, CreateLimit, UpdateLimit
 
 
 class LimitService:
@@ -28,3 +28,13 @@ class LimitService:
         except IntegrityError as ex:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ex).split("\n")[0])
         return LimitDetail.model_validate(new_limit)
+
+    def update(self, limit_id: int, payload: UpdateLimit) -> LimitDetail:
+        self._limit_repo.update(limit_id, payload)
+        return self.get_detail(limit_id)
+
+    def delete(self, limit_id: int) -> None:
+        item: Optional[LimitModel] = self._limit_repo.get_by_id(limit_id)
+        if not item:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Limit not found")
+        self._limit_repo.delete(item)

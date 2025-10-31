@@ -7,7 +7,7 @@ from shemes.proc import ActiveProcess
 
 class ProcessesCollector:
 
-    def __init__(self) -> str:
+    def __init__(self) -> None:
         self.__updated:bool = False
         self._active_processes:list[ActiveProcess] = []
 

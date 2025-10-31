@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Пользователь "{{user.username}}" {% endblock %}
+
+{% block content %}
+<h1>Пользователь "{{user.username}}"</h1>
+<p>ID: {{user.id}}</p>
+
+
+<h1>Лимиты:</h1>
+
+<ul id="users-list" class="list-group">
+    <button
+            type="button"
+            class="list-group-item active d-flex justify-content-center align-items-center"
+            data-bs-toggle="modal"
+            data-bs-target="#addLimitModal"
+            aria-current="true"
+            aria-label="Добавить приложение"
+    >+
+    </button>
+
+    {% for limit in user.limits %}
+    <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ limit.app.name }} </h5>
+        </div>
+        <div class="mb-1" id="limitRemainsText{{limit.id}}"></div>
+        <label for="rangeLimit{{ limit.id }}" class="form-label" id="rangeLimitText{{ limit.id }}"></label>
+        <input
+                type="range"
+                class="form-range limit-range"
+                min="1"
+                max="144"
+                id="rangeLimit{{ limit.id }}"
+                value="{{ limit.minutes // 10 }}"
+                data-limit-id="{{ limit.id }}"
+                data-counter-today="{{ limit.counter_today }}"
+        >
+        <!-- Переключатель вкл/выкл -->
+        <div class="form-switch me-3">
+            <input
+
+                    class="form-check-input limit-toggle"
+                    type="checkbox"
+                    id="toggleActiveLimit{{ limit.id }}"
+                    data-limit-id="{{ limit.id }}"
+                    {% if limit.active %}checked{% endif %}
+            >
+            <label class="form-check-label small" id="toggleActiveText{{ limit.id }}">
+                {% if limit.active %}Вкл{% else %}Выкл{% endif %}
+            </label>
+        </div>
+
+    </div>
+    {% endfor %}
+</ul>
+
+<!-- Модальное окно добавления лимита приложения пользователю -->
+<div class="modal fade" id="addLimitModal" tabindex="-1" aria-labelledby="addLimitModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="add-limit-form">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLimitModalLabel">Добавить лимит времени</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Место для отображения ошибок -->
+                    <div id="limit-form-errors" class="alert alert-danger d-none" role="alert"></div>
+
+                    <input type="hidden" id="selectedUserId" name="user_id" value="{{ user.id }}">
+                    <p>Добавление лимита для пользователя: <strong>{{ user.username }} (ID: {{ user.id }})</strong></p>
+
+                    <div class="mb-3">
+                        <label for="limitAppId" class="form-label">Приложение</label>
+                        <select class="form-select" id="limitAppId" name="app_id" required>
+                            <option value="" disabled selected>Выберите приложение</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="limitMinutes" class="form-label">Минуты</label>
+                        <input type="number" class="form-control" id="limitMinutes" name="minutes"
+                               placeholder="Введите количество минут" required min="1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Подключаемые скрипты -->
+<script src="/static/js/fill.apps.js"></script>
+<script src="/static/js/push.toggle.active.js"></script>
+<script src="/static/js/on.change.range.js"></script>
+{% endblock %}
+
+
+

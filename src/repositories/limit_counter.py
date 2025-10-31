@@ -12,15 +12,17 @@ class LimitCounterRepository(BaseRepository):
         return self._db.query(LimitCounterModel).filter(LimitCounterModel.limit_id == limit_id).all()
 
     def get_or_none(self, limit_id: int, _date: date) -> Optional[LimitCounterModel]:
-        return (self._db.query(LimitCounterModel)
-                .filter(LimitCounterModel.limit_id == limit_id)
+        return (self._db
+                .query(LimitCounterModel)
+                .filter(LimitCounterModel.limit_id == limit_id,
+                        LimitCounterModel.date == _date)
                 .first())
 
     def get_or_create(self, limit_id: int, _date: date) -> tuple[bool, Optional[LimitCounterModel]]:
         created: bool = False
         exist: Optional[LimitCounterModel] = self.get_or_none(limit_id, _date)
         if not exist:
-            exist = LimitCounterModel(limit_id=limit_id,date=_date)
+            exist = LimitCounterModel(limit_id=limit_id, date=_date)
             self.save(exist)
         return created, exist
 

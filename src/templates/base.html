@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Sessions manager{% endblock %}</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css"/>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <style>
+        @media (max-width: 576px) {
+            .offcanvas-title {
+                font-size: 1.75rem;
+                font-weight: 600;
+            }
+            .offcanvas-body .nav-link {
+                font-size: 1.25rem;
+                padding: 0.75rem 1rem;
+            }
+        }
+        /* Центрирование и ограничение ширины основного контента */
+        .content-wrapper {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="content-wrapper">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#">Мой сайт</a>
+    <!-- Кнопка для открытия offcanvas на мобильных -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar" aria-label="Переключить навигацию">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas меню для мобильных -->
+    <div class="offcanvas offcanvas-start" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h2 class="offcanvas-title" id="offcanvasNavbarLabel">Навигация</h2>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <ul class="navbar-nav flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/users">Пользователи</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/apps">Приложения</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+    <div class="content">
+        {% block content %}
+        <!-- Основное содержимое страницы -->
+        {% endblock %}
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,23 +1,27 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
+
+from fastapi import APIRouter, Request, Depends
+from fastapi.responses import HTMLResponse
+
+from config import templates
 from dependencies.user import get_user_service
 from services.user import UserService
-from shemes.user import UserList, UserDetail
+from shemes.user import UserDetail
 
-router = APIRouter(prefix="/users", tags=["Пользователи"])
-
-
-@router.get("", summary="Список пользователей")
-async def get_list_users(
-        user_service: Annotated[UserService, Depends(get_user_service)]
-) -> list[UserList]:
-    return user_service.get_list()
+router = APIRouter(prefix="/users")
 
 
-@router.get("/{pk}", summary="Детали пользователя")
-async def get_list_users(
+@router.get("")
+async def users_list(request: Request, user_service: Annotated[UserService, Depends(get_user_service)]) -> HTMLResponse:
+    users_detail: list[UserDetail] = user_service.get_list()
+    return templates.TemplateResponse("user_list.html", {"request": request, "users": users_detail})
+
+
+@router.get("/{pk}")
+async def get_user_detail(
         pk: int,
-        user_service: Annotated[UserService, Depends(get_user_service)]
-) -> UserDetail:
-    return user_service.get_detail(pk)
-
+        request: Request, user_service: Annotated[UserService,
+        Depends(get_user_service)]
+) -> HTMLResponse:
+    user_detail: UserDetail = user_service.get_detail(pk)
+    return templates.TemplateResponse("user_detail.html", {"request": request, "user": user_detail})

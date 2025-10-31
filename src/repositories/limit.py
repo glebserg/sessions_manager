@@ -2,7 +2,7 @@ from typing import Type, Optional
 
 from repositories import BaseRepository
 from models import LimitModel
-from shemes.limit import CreateLimit
+from shemes.limit import CreateLimit, UpdateLimit
 
 
 class LimitRepository(BaseRepository):
@@ -18,3 +18,15 @@ class LimitRepository(BaseRepository):
         self._db.add(new_item)
         self._db.commit()
         return new_item
+
+    def update(self, pk: int, payload: UpdateLimit) -> Optional[LimitModel]:
+        item = self.get_by_id(pk)
+        if item:
+            for field, value in payload.model_dump(exclude_unset=True).items():
+                setattr(item, field, value)
+            self._db.commit()
+        return item
+
+    def delete(self, item:LimitModel) -> None:
+        self._db.delete(item)
+        self._db.commit()

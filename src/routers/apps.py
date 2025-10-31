@@ -1,40 +1,30 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Request, Depends
+from fastapi.responses import HTMLResponse
 
+from config import templates
 from dependencies.app import get_app_service
 from services.app import AppService
-from shemes.app import AppList, AppDetail, CreateApp
+from shemes.app import AppDetail
 
-router = APIRouter(prefix="/apps", tags=["Приложения"])
+router = APIRouter(prefix="/apps")
 
 
-@router.get("", summary="Список приложений")
-async def get_list_apps(
+@router.get("")
+async def apps_list(
+        request: Request,
         app_service: Annotated[AppService, Depends(get_app_service)]
-) -> list[AppList]:
-    return app_service.get_list()
+) -> HTMLResponse:
+    apps: AppDetail = app_service.get_list()
+    return templates.TemplateResponse("app_list.html", {"request": request, "apps": apps})
 
 
-@router.get("/{pk}", summary="Детали приложения")
-async def get_app_detail(
+@router.get("/{pk}")
+async def app_detail(
         pk: int,
+        request: Request,
         app_service: Annotated[AppService, Depends(get_app_service)]
-) -> AppDetail:
-    return app_service.get_detail(pk)
-
-
-@router.post("", summary="Добавить приложения")
-async def create_app(
-        payload: CreateApp,
-        app_service: Annotated[AppService, Depends(get_app_service)],
-) -> AppDetail:
-    return app_service.create(payload)
-
-
-@router.delete("/{pk}", summary="Удалить приложения", status_code=status.HTTP_204_NO_CONTENT, )
-async def delete_app(
-        pk: int,
-        app_service: Annotated[AppService, Depends(get_app_service)],
-) -> None:
-    return app_service.delete(pk)
+) -> HTMLResponse:
+    app: AppDetail = app_service.get_detail(pk)
+    return templates.TemplateResponse("app_detail.html", {"request": request, "app": app})

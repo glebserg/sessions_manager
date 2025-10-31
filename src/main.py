@@ -1,77 +1,58 @@
 from contextlib import asynccontextmanager
 from datetime import datetime
-from typing import Optional
+from typing import Annotated
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Depends
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 
-from config import app_setting
+from config import app_setting, templates
 from constants import UPDATE_COUNTER_RATE, USER_INSPECT_RATE
-from dependencies.limit import get_limit_service
-from dependencies.limit_counters import get_limit_counter_service
-from models import LimitCounterModel
-from services.background.counter_updater import CounterUpdater
-from dependencies.init_app import init_app
-from routers import users, apps, limits
+from database import Base, engine
+from dependencies.user import get_user_service
+from services.background import counter_updater, access_killer
+from dependencies.init_app import create_local_users_to_db, create_base_app
+from routers.api import users as api_users
+from routers.api import apps as api_apps
+from routers.api import limits as api_limits
+from routers import users,apps
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from services.limit import LimitService
-from services.limit_counter import LimitCounterService
-from services.background.process_killer import ProcessKiller
-from services.processes_collector import ProcessesCollector
-from shemes.proc import ActiveProcess
-from utils.cmd import run_cmd
-
-
-async def update_counters() -> None:
-    limit_counter_service: LimitCounterService = get_limit_counter_service()
-    limit_service: LimitService = get_limit_service()
-    proc_collector = ProcessesCollector()
-    for limit in limit_service.get_list():
-        if limit.active:
-            coincidence: Optional[ActiveProcess] = proc_collector.get(limit.user.username, limit.app.name)
-            if coincidence:
-                today = datetime.today()
-                limit_counter_service.counter_up(limit.id, today)
-                counter: LimitCounterModel = limit_counter_service.get_or_none(limit.id, today)
-                if counter.count_minutes >= limit.minutes:
-                    await run_cmd(f"kill {coincidence.pid}")
+from services.user import UserService
+from shemes.user import UserDetail, UserList
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     """on_startup."""
-    await init_app()
 
-    process_collector = ProcessesCollector()
-    limit_service = get_limit_service()
-    limit_counter_service = get_limit_counter_service()
-
-    counter_updater = CounterUpdater(
-        proc_collector=process_collector,
-        limit_service=limit_service,
-        limit_counter_service=limit_counter_service
-    )
-
-    process_killer = ProcessKiller(
-        proc_collector=process_collector,
-        limit_service=limit_service,
-        limit_counter_service=limit_counter_service
-    )
+    Base.metadata.create_all(bind=engine)
+    await create_local_users_to_db()
+    create_base_app()
 
     scheduler = AsyncIOScheduler()
     scheduler.add_job(counter_updater, "interval", seconds=UPDATE_COUNTER_RATE, next_run_time=datetime.now())
-    scheduler.add_job(process_killer, "interval", seconds=USER_INSPECT_RATE, next_run_time=datetime.now())
+    scheduler.add_job(access_killer, "interval", seconds=USER_INSPECT_RATE, next_run_time=datetime.now())
     scheduler.start()
     yield
     scheduler.shutdown()
 
 
-
 app = FastAPI(lifespan=lifespan)
+app.include_router(api_apps.router)
+app.include_router(api_limits.router)
+app.include_router(api_users.router)
 app.include_router(users.router)
 app.include_router(apps.router)
-app.include_router(limits.router)
+
+@app.get("/")
+async def users_list(request: Request, user_service: Annotated[UserService, Depends(get_user_service)]) -> HTMLResponse:
+    users_detail: list[UserList] = user_service.get_list()
+    return templates.TemplateResponse("user_list.html", {"request": request, "users": users_detail})
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 if __name__ == "__main__":
     uvicorn.run(

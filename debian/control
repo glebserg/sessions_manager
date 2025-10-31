@@ -1,0 +1,11 @@
+Source: session-manager
+Section: python
+Priority: optional
+Maintainer: Gleb Muravyev <glebserg@mail.ru>
+Build-Depends: debhelper-compat (= 13), dh-python, python3-all
+Standards-Version: 4.5.1
+
+Package: session-manager
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Session Manager

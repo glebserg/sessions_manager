@@ -4,6 +4,7 @@ from fastapi import HTTPException,status
 
 from models import UserModel
 from repositories.user import UserRepository
+from shemes.app import CreateApp
 from shemes.user import UserList, UserDetail
 
 

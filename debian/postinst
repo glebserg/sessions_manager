@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd /opt/session-manager
+
+echo "Creating .env file from .env.example"
+cp .env.example .env
+
+echo "Install poetry-env"
+poetry install --no-root
+
+echo "Run session-manager service"
+systemctl daemon-reload
+systemctl enable session-manager.service
+systemctl start session-manager.service

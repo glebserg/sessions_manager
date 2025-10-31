@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Список приложений{% endblock %}
+
+{% block content %}
+<h1>Приложения</h1>
+<br>
+
+<ul id="apps-list" class="list-group">
+    <button
+        type="button"
+        class="list-group-item list-group-item-action active d-flex justify-content-center align-items-center"
+        data-bs-toggle="modal"
+        data-bs-target="#addAppModal"
+        aria-current="true"
+        aria-label="Добавить приложение"
+    >
+        +
+    </button>
+
+    {% for app in apps %}
+    <a href="/apps/{{ app.id }}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ app.name }}</h5>
+        </div>
+        <p class="mb-1">{{ app.description or "Нет описания" }}</p>
+        <small class="text-body-secondary">ID: {{ app.id }}</small>
+    </a>
+    {% endfor %}
+</ul>
+
+<!-- Модальное окно добавления приложения -->
+<div class="modal fade" id="addAppModal" tabindex="-1" aria-labelledby="addAppModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="add-app-form">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAppModalLabel">Добавить приложение</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Место для отображения ошибок -->
+                    <div id="form-errors" class="alert alert-danger d-none" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label for="appName" class="form-label">Название</label>
+                        <input type="text" class="form-control" id="appName" name="name" placeholder="Введите название" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appDescription" class="form-label">Описание</label>
+                        <textarea class="form-control" id="appDescription" name="description" rows="3" placeholder="Краткое описание (необязательно)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/create.app.js"></script>
+{% endblock %}
