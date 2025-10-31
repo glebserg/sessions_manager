@@ -3,6 +3,6 @@ __pycache__/
 *.py[cod]
 .states
 assets/external/
-.web
-./debian
+.web./debian
 /debian/
+/.idea
