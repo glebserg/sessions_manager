@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Mon, 29 Oct 2025 20:44:45 +0300
+Source: session-manager
+Binary: session-manager
+Built-For-Profiles: noudeb
+Architecture: all
+Version: 0.0.1
+Distribution: experimental
+Urgency: medium
+Maintainer: Gleb Muravyev <glebserg@mail.ru>
+Changed-By: Gleb Muravyev <glebserg@mail.ru>
+Description:
+ session-manager - Session Manager
+Changes:
+ session-manager (0.0.1) experimental; urgency=medium
+ .
+   * Пофиксил бажную страницу
+Checksums-Sha1:
+ a649a289802cd2c489881aa9dc1604ce5243deb4 464676 session-manager_0.0.1_all.deb
+ c362e24e2d4fecc64730998c56552e73dc24fca7 16139 session-manager_0.0.1_amd64.buildinfo
+Checksums-Sha256:
+ 43d270e5f7a52269bf6247ebc1c2c514cef976209f5c4c36f564eb440dde0b8a 464676 session-manager_0.0.1_all.deb
+ b8afd915d1ffec645d4c77d3695f47b9af709009072b83ecc7bca901d01e4be8 16139 session-manager_0.0.1_amd64.buildinfo
+Files:
+ 00453ecc3c244ee2bc1e3e8cfd1e74f2 464676 python optional session-manager_0.0.1_all.deb
+ 7a4c7e2ace20f01b0eca5297b49f53e4 16139 python optional session-manager_0.0.1_amd64.buildinfo
