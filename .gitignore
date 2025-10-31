@@ -5,4 +5,4 @@ __pycache__/
 assets/external/
 .web./debian
 /debian/
-/.idea
+/.idea/
