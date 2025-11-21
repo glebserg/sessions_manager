@@ -1,3 +1,6 @@
+format:
+	poetry run pre-commit run --all-files
+
 run-app:
 	@echo "Запускаю приложение"
 	export $$(grep -v '^#' .env | xargs) && \

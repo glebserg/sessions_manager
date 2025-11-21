@@ -8,23 +8,25 @@ from repositories.app import AppRepository
 from repositories.user import UserRepository
 from services.local_user_collector import LocalUserCollector
 from shemes.app import CreateApp
-from shemes.user import LocalUser, CreateUser
+from shemes.user import CreateUser, LocalUser
 
 
-def create_base_app() -> None:
+def create_system_app() -> None:
+    """Добавляет 'системное' приложение."""
     repo_apps: AppRepository = get_app_repo()
     app_exist: Optional[AppModel] = repo_apps.get_by_name(NAME_APP_SYSTEM)
     if not app_exist:
         new_system_app = CreateApp(
-                name=NAME_APP_SYSTEM,
-                description="'Системное' приложение. "
-                            "Существует для глобальной блокировки доступа Пользователю(закрытия сессии)"
-            )
+            name=NAME_APP_SYSTEM,
+            description="'Системное' приложение. "
+            "Существует для глобальной блокировки доступа Пользователю(закрытия сессии)",
+        )
         repo_apps.create(new_system_app)
         uvicorn_logger.info("'Системное' приложение добавлено в БД")
 
 
 async def create_local_users_to_db() -> None:
+    """Добавляет локального пользователя в БД."""
     collector = LocalUserCollector()
     local_users: list[LocalUser] = await collector.get_list()
     repo_users: UserRepository = get_user_repo()

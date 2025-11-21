@@ -4,14 +4,14 @@ Binary: session-manager
 Architecture: all
 Version: 0.0.1
 Checksums-Md5:
- 00453ecc3c244ee2bc1e3e8cfd1e74f2 464676 session-manager_0.0.1_all.deb
+ ed5d940e6df18a3925bdccc2c188f21b 468306 session-manager_0.0.1_all.deb
 Checksums-Sha1:
- a649a289802cd2c489881aa9dc1604ce5243deb4 464676 session-manager_0.0.1_all.deb
+ 8c989fe710f0c8887842197c74edb9a5720fd1ce 468306 session-manager_0.0.1_all.deb
 Checksums-Sha256:
- 43d270e5f7a52269bf6247ebc1c2c514cef976209f5c4c36f564eb440dde0b8a 464676 session-manager_0.0.1_all.deb
+ 7272df108d66849b558c82aaa3d1dfb6ae2fafe697571a92b809bc8d284fa78d 468306 session-manager_0.0.1_all.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Fri, 31 Oct 2025 09:39:29 +0300
+Build-Date: Fri, 21 Nov 2025 14:44:27 +0300
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
  usr-local-has-programs
@@ -446,5 +446,5 @@ Environment:
  DEB_BUILD_OPTIONS="parallel=16"
  DEB_BUILD_PROFILES="noudeb"
  LANG="ru_RU.UTF-8"
- MAKEFLAGS="w"
+ MAKEFLAGS=""
  SOURCE_DATE_EPOCH="1761759885"

@@ -3,6 +3,5 @@ from services.user import UserService
 
 
 def get_user_service() -> UserService:
-    return UserService(
-        user_repo=get_user_repo()
-    )
+    """Возвращает сервис для работы с пользователями."""
+    return UserService(user_repo=get_user_repo())

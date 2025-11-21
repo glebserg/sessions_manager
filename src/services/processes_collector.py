@@ -6,12 +6,16 @@ from shemes.proc import ActiveProcess
 
 
 class ProcessesCollector:
+    """Собиратель процессов Операционной Системы."""
 
     def __init__(self) -> None:
-        self.__updated:bool = False
-        self._active_processes:list[ActiveProcess] = []
+        self.__updated: bool = False
+        self._active_processes: list[ActiveProcess] = []
 
-    def update(self, ) -> None:
+    def update(
+        self,
+    ) -> None:
+        """Обновить."""
         for proc in psutil.process_iter(["username", "name", "pid"]):
             try:
                 self._active_processes.append(ActiveProcess(**proc.info))
@@ -19,6 +23,7 @@ class ProcessesCollector:
                 pass
 
     def get(self, username: str, app_name: str) -> Optional[ActiveProcess]:
+        """Получить."""
         if not self.__updated:
             self.update()
         for active_proc in self._active_processes:

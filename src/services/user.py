@@ -1,22 +1,24 @@
 from typing import Optional
 
-from fastapi import HTTPException,status
+from fastapi import HTTPException, status
 
 from models import UserModel
 from repositories.user import UserRepository
-from shemes.app import CreateApp
-from shemes.user import UserList, UserDetail
+from shemes.user import UserDetail, UserList
 
 
 class UserService:
+    """Сервис для работы с пользователями."""
 
-    def __init__(self,user_repo: UserRepository):
+    def __init__(self, user_repo: UserRepository):
         self._user_repo = user_repo
 
     def get_list(self) -> list[UserList]:
+        """Возвращает список пользователей."""
         return [UserList.model_validate(item) for item in self._user_repo.get_list()]
 
-    def get_detail(self,user_id: int) -> UserDetail:
+    def get_detail(self, user_id: int) -> UserDetail:
+        """Возвращает детали пользователя."""
         user: Optional[UserModel] = self._user_repo.get_by_id(user_id)
         if user:
             return UserDetail.model_validate(user)

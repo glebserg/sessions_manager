@@ -3,6 +3,5 @@ from services.app import AppService
 
 
 def get_app_service() -> AppService:
-    return AppService(
-        app_repo=get_app_repo()
-    )
+    """Возвращает Сервис для работы с приложениями."""
+    return AppService(app_repo=get_app_repo())

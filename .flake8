@@ -1,0 +1,4 @@
+[flake8]
+ignore = VNE003, D100, D104, D106, D107
+exclude = .git, __pycache__, .venv, venv, env, .idea, .vscode
+max-line-length = 120

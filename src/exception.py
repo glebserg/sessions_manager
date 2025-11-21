@@ -1,6 +1,5 @@
 from abc import ABC
 from typing import Optional
-from uuid import UUID
 
 
 class CustomError(Exception, ABC):
