@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import Final, Optional
+from typing import Final
 
 from constants import NAME_APP_SYSTEM
 from logger import uvicorn_logger
@@ -58,7 +58,7 @@ class AccessLocker:
         for limit in self._limit_service.get_list():
             if limit.active:
                 if self._proc_collector.get(limit.user.username, limit.app.name):
-                    today_limit: Optional[LimitCounterDetail] = self._limit_counter_service.get_or_none(
+                    today_limit: LimitCounterDetail | None = self._limit_counter_service.get_or_none(
                         limit_id=limit.id, _date=today
                     )
                     if today_limit and today_limit.count_minutes >= limit.minutes:

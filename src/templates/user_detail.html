@@ -24,6 +24,18 @@
     <div class="list-group-item">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ limit.app.name }} </h5>
+            <small class="text-body-secondary">
+                <button class="btn btn-danger btn-sm p-1 me-2 rounded"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteConfirmModal"
+                        data-limit-id="{{ limit.id }}"
+                >
+                    <img src="{{ url_for('static', path='/images/trash.svg') }}"
+                         class="logo-btn"
+                         style="height: 20px; width: auto;"
+                    >
+                </button>
+            </small>
         </div>
         <div class="mb-1" id="limitRemainsText{{limit.id}}"></div>
         <label for="rangeLimit{{ limit.id }}" class="form-label" id="rangeLimitText{{ limit.id }}"></label>
@@ -93,10 +105,26 @@
     </div>
 </div>
 
+<!-- Модальное окно подтверждения удаления лимита -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <h6 class="mb-3">Вы уверены?</h6>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Подключаемые скрипты -->
 <script src="/static/js/fill.apps.js"></script>
 <script src="/static/js/push.toggle.active.js"></script>
 <script src="/static/js/on.change.range.js"></script>
+<script src="/static/js/on.delete.limit.js"></script>
 {% endblock %}
 
 

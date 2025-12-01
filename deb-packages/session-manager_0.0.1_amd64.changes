@@ -16,11 +16,11 @@ Changes:
  .
    * Пофиксил бажную страницу
 Checksums-Sha1:
- 8c989fe710f0c8887842197c74edb9a5720fd1ce 468306 session-manager_0.0.1_all.deb
- 348fc636b870f03149ff9122bd6382854f47b0dd 16138 session-manager_0.0.1_amd64.buildinfo
+ b1d2df2d89cf24a98cdf200bde5158f4a053cdb0 469416 session-manager_0.0.1_all.deb
+ 96a6cb83440293a6402204b3e3cabefc75fcf3d4 16145 session-manager_0.0.1_amd64.buildinfo
 Checksums-Sha256:
- 7272df108d66849b558c82aaa3d1dfb6ae2fafe697571a92b809bc8d284fa78d 468306 session-manager_0.0.1_all.deb
- 7ec888dba1d91e8d2019b974d3eff6e46cd4285857bb5b496149f6b69d77eddb 16138 session-manager_0.0.1_amd64.buildinfo
+ 39f35b50bad74b8530be606bf5f947229f765e59d7fe7c708b96b9aef1722263 469416 session-manager_0.0.1_all.deb
+ c735b1eb9f210d971016944fa401716fbaf56b9d845a0b92ecddbf57c3dd01ef 16145 session-manager_0.0.1_amd64.buildinfo
 Files:
- ed5d940e6df18a3925bdccc2c188f21b 468306 python optional session-manager_0.0.1_all.deb
- 774bf23dd5e11db018ed6956a9c3261d 16138 python optional session-manager_0.0.1_amd64.buildinfo
+ def2813bc5ed20414d8804814c1684c0 469416 python optional session-manager_0.0.1_all.deb
+ 389187fc4f522759ded2749ab112ae2c 16145 python optional session-manager_0.0.1_amd64.buildinfo

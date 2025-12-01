@@ -1,5 +1,4 @@
 from datetime import date
-from typing import Optional
 
 from models import LimitCounterModel
 from repositories import BaseRepository
@@ -10,11 +9,7 @@ class LimitCounterRepository(BaseRepository):
 
     model = LimitCounterModel
 
-    def get_list(self, limit_id: int | None = None) -> list[LimitCounterModel]:
-        # TODO адаптировать под *args, **kwargs
-        return self._db.query(LimitCounterModel).filter(LimitCounterModel.limit_id == limit_id).all()
-
-    def get_or_none(self, limit_id: int, _date: date) -> Optional[LimitCounterModel]:
+    def get_or_none(self, limit_id: int, _date: date) -> LimitCounterModel | None:
         """Получить, если есть."""
         return (
             self._db.query(LimitCounterModel)

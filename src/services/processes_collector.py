@@ -1,5 +1,3 @@
-from typing import Optional
-
 import psutil
 
 from shemes.proc import ActiveProcess
@@ -22,7 +20,7 @@ class ProcessesCollector:
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 pass
 
-    def get(self, username: str, app_name: str) -> Optional[ActiveProcess]:
+    def get(self, username: str, app_name: str) -> ActiveProcess | None:
         """Получить."""
         if not self.__updated:
             self.update()

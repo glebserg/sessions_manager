@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import HTTPException, status
 
 from models import UserModel
@@ -19,7 +17,7 @@ class UserService:
 
     def get_detail(self, user_id: int) -> UserDetail:
         """Возвращает детали пользователя."""
-        user: Optional[UserModel] = self._user_repo.get_by_id(user_id)
+        user: UserModel | None = self._user_repo.get_by_id(user_id)
         if user:
             return UserDetail.model_validate(user)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")

@@ -1,8 +1,7 @@
 from datetime import date
-from typing import Optional
 
 
-def get_count_today(limit_id: int, day: date) -> Optional[int]:
+def get_count_today(limit_id: int, day: date) -> int | None:
     """Возвращает счётчик минут по дате."""
     from dependencies.limit_counters import get_limit_counter_service
 

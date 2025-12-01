@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
@@ -21,7 +19,7 @@ class AppService:
 
     def get_detail(self, app_id: int) -> AppDetail:
         """Детали приложения."""
-        app: Optional[AppModel] = self._app_repo.get_by_id(app_id)
+        app: AppModel | None = self._app_repo.get_by_id(app_id)
         if app:
             return AppDetail.model_validate(app)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="App not found")
@@ -37,7 +35,7 @@ class AppService:
 
     def delete(self, app_id: int) -> None:
         """Удалить приложение."""
-        app: Optional[AppModel] = self._app_repo.get_by_id(app_id)
+        app: AppModel | None = self._app_repo.get_by_id(app_id)
         if not app:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="App not found")
         else:

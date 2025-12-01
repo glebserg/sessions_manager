@@ -1,5 +1,4 @@
 from datetime import date
-from typing import Optional
 
 from models import LimitCounterModel
 from repositories.limit_counter import LimitCounterRepository
@@ -14,11 +13,13 @@ class LimitCounterService:
 
     def get_list(self, limit_id: int | None = None) -> list[LimitCounterList]:
         """Возвращает список счётчиков по лимиту."""
-        return [LimitCounterList.model_validate(item) for item in self._limit_counter_repo.get_list(limit_id)]
+        return [LimitCounterList.model_validate(item) for item in self._limit_counter_repo.get_list(limit_id=limit_id)]
 
-    def get_or_none(self, limit_id: int, _date: date) -> Optional[LimitCounterDetail]:
+    def get_or_none(self, limit_id: int, _date: date) -> LimitCounterDetail | None:
         """Возвращает счётчик по лимиту и дате, если есть."""
-        item: Optional[LimitCounterModel] = self._limit_counter_repo.get_or_none(limit_id, _date)
+        item: LimitCounterModel | None = self._limit_counter_repo.get_first_or_none_by_filters(
+            limit_id=limit_id, date=_date
+        )
         if item:
             return LimitCounterDetail.model_validate(item)
         return None

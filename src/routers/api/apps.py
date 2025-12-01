@@ -34,7 +34,7 @@ async def create_app(
 
 @router.delete(
     "/{pk}",
-    summary="Удалить приложения",
+    summary="Удалить приложение",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_app(

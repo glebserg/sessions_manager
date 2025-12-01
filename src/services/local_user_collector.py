@@ -12,7 +12,7 @@ class LocalUserCollector:
         self._local_users: list[LocalUser] = []
 
     def __is_valid_user(self, raw_data: str) -> bool:
-        return all(checker_cls(raw_data).passed() for checker_cls in CheckRawUser.__subclasses__())
+        return all(checker_cls(raw_data).passed() for checker_cls in CheckRawUser.__subclasses__())  # type: ignore
 
     def __parse_users(self, raw_data: str) -> list[LocalUser]:
         return [LocalUser(username=line.split(":")[0]) for line in raw_data.splitlines() if self.__is_valid_user(line)]

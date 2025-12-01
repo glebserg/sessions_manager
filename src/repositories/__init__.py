@@ -1,27 +1,42 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Any
 
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from models import BaseIDModel, UserModel
+from models import BaseIDModel
 
 
 class BaseRepository(ABC):
     """Базовый репозиторий."""
 
-    model: type[BaseIDModel]
+    @property
+    @abstractmethod
+    def model(self) -> type[BaseIDModel]:
+        """Префикс агента в etcd.
+
+        Template:
+            /{agent_key}/
+
+        Example:
+            /fc/
+
+        """
 
     def __init__(self, db: Session):
         self._db = db
 
-    def get_list(self, *args: Any, **kwargs: Any) -> list[type[BaseIDModel]]:
+    def get_list(self, **filters: Any) -> list[type[BaseIDModel]]:
         """Список."""
-        return list(self._db.query(self.model).all())
+        return list(self._db.query(self.model).filter_by(**filters).all())
 
     def get_by_id(self, pk: int) -> BaseIDModel | None:
         """Детали по id."""
-        return self._db.query(UserModel).get(pk)
+        return self._db.query(self.model).get(pk)
+
+    def get_first_or_none_by_filters(self, **filters: Any) -> BaseIDModel | None:
+        """Детали по id."""
+        return self._db.query(self.model).filter_by(**filters).first()
 
     def create(self, payload: BaseModel) -> BaseIDModel:
         """Добавить."""

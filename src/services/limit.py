@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
@@ -20,7 +18,7 @@ class LimitService:
 
     def get_detail(self, limit_id: int) -> LimitDetail:
         """Детали лимита."""
-        limit: Optional[LimitModel] = self._limit_repo.get_by_id(limit_id)
+        limit: LimitModel | None = self._limit_repo.get_by_id(limit_id)
         if limit:
             return LimitDetail.model_validate(limit)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Limit not found")
@@ -40,7 +38,8 @@ class LimitService:
 
     def delete(self, limit_id: int) -> None:
         """Удалить лимит."""
-        item: Optional[LimitModel] = self._limit_repo.get_by_id(limit_id)
+        item: LimitModel | None = self._limit_repo.get_by_id(limit_id)
+        print(item)
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Limit not found")
-        self._limit_repo.delete(item)
+        self._limit_repo.delete(item.id)

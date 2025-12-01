@@ -1,5 +1,3 @@
-from typing import Optional
-
 from models import LimitModel
 from repositories import BaseRepository
 from shemes.limit import UpdateLimit
@@ -10,7 +8,7 @@ class LimitRepository(BaseRepository):
 
     model = LimitModel
 
-    def update(self, pk: int, payload: UpdateLimit) -> Optional[LimitModel]:
+    def update(self, pk: int, payload: UpdateLimit) -> LimitModel | None:
         """Обновить."""
         item = self.get_by_id(pk)
         if item:

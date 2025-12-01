@@ -1,5 +1,4 @@
 from abc import ABC
-from typing import Optional
 
 
 class CustomError(Exception, ABC):
@@ -7,7 +6,7 @@ class CustomError(Exception, ABC):
 
     message = "Something went wrong."
 
-    def __init__(self, message: Optional[str] = None) -> None:
+    def __init__(self, message: str | None = None) -> None:
         if message is not None:
             self.message = message
 

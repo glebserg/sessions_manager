@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -10,7 +9,7 @@ class CreateApp(BaseModel):
     """Форма добавления приложения."""
 
     name: str
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class AppList(DBItemReader):
@@ -18,7 +17,7 @@ class AppList(DBItemReader):
 
     id: int
     name: str
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class AppDetail(AppList):
